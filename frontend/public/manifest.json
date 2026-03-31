@@ -1,0 +1,16 @@
+{
+  "name": "What Should I Do Tonight?",
+  "short_name": "Tonight",
+  "description": "AI-powered life recommendation engine",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0F1117",
+  "theme_color": "#378ADD",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

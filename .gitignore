@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+venv/
+__pycache__/
+*.pyc
+
+# Environment
+.env
+.env.local
+
+# Build
+dist/
+build/
+*.egg-info/
+
+# Database
+*.db
+*.sqlite3
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Trained models (large files)
+backend/trained_models/*.pkl
+backend/trained_models/*.joblib
+
+# Jupyter
+.ipynb_checkpoints/
