@@ -4,10 +4,10 @@ from datetime import datetime, timedelta
 from app.services.cache_service import cache
 from app.config import settings
 
-# Primary: CricketData.org free tier (100 req/day)
+# Primary: CricAPI.com (works with cricketdata.org key too)
 # Fallback: Mock data based on real IPL teams
 
-CRICAPI_BASE = "https://api.cricketdata.org"
+CRICAPI_BASE = "https://api.cricapi.com/v1"
 
 IPL_TEAMS = [
     "Mumbai Indians", "Chennai Super Kings", "Royal Challengers Bangalore",
@@ -29,12 +29,13 @@ async def _fetch_cricapi(endpoint: str, params: dict = None):
         return None
 
     try:
-        headers = {"apikey": api_key}
-        async with httpx.AsyncClient() as client:
+        if params is None:
+            params = {}
+        params["apikey"] = api_key
+        async with httpx.AsyncClient(verify=False) as client:
             resp = await client.get(
                 f"{CRICAPI_BASE}/{endpoint}",
-                headers=headers,
-                params=params or {},
+                params=params,
                 timeout=10,
             )
             if resp.status_code == 200:
@@ -57,7 +58,7 @@ async def get_live_matches():
         return cached
 
     # Try CricketData.org first
-    api_data = await _fetch_cricapi("currentMatches", {"apikey": settings.CRICKET_API_KEY})
+    api_data = await _fetch_cricapi("currentMatches")
     if api_data:
         matches = []
         for match in api_data[:5]:
@@ -177,7 +178,7 @@ async def get_upcoming_matches():
         return cached
 
     # Try CricAPI
-    api_data = await _fetch_cricapi("matches", {"apikey": settings.CRICKET_API_KEY, "offset": 0})
+    api_data = await _fetch_cricapi("matches", {"offset": 0})
     if api_data:
         matches = []
         for match in api_data:
@@ -227,7 +228,7 @@ async def get_upcoming_matches():
 
 
 async def get_recent_results():
-    api_data = await _fetch_cricapi("matches", {"apikey": settings.CRICKET_API_KEY, "offset": 0})
+    api_data = await _fetch_cricapi("matches", {"offset": 0})
     if api_data:
         results = []
         for match in api_data:

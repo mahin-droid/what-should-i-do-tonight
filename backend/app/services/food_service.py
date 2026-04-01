@@ -62,7 +62,7 @@ async def _fetch_foursquare(query: str = None, categories: str = None, lat: floa
         if categories:
             params["categories"] = categories
 
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(verify=False) as client:
             resp = await client.get(
                 f"{FOURSQUARE_BASE}/search",
                 headers=headers,

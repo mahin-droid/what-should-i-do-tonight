@@ -39,7 +39,7 @@ async def get_trending():
 
     try:
         if settings.TMDB_API_KEY and settings.TMDB_API_KEY != "demo_key":
-            async with httpx.AsyncClient() as client:
+            async with httpx.AsyncClient(verify=False) as client:
                 resp = await client.get(
                     "https://api.themoviedb.org/3/trending/all/day",
                     params={"api_key": settings.TMDB_API_KEY},
@@ -77,7 +77,7 @@ async def search_entertainment(query: str):
 
     try:
         if settings.TMDB_API_KEY and settings.TMDB_API_KEY != "demo_key":
-            async with httpx.AsyncClient() as client:
+            async with httpx.AsyncClient(verify=False) as client:
                 resp = await client.get(
                     "https://api.themoviedb.org/3/search/multi",
                     params={"api_key": settings.TMDB_API_KEY, "query": query},

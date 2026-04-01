@@ -17,7 +17,7 @@ async def _fetch_football_api(endpoint: str, params: dict = None):
 
     try:
         headers = {"X-Auth-Token": api_key}
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(verify=False) as client:
             resp = await client.get(
                 f"{FOOTBALL_API_BASE}/{endpoint}",
                 headers=headers,

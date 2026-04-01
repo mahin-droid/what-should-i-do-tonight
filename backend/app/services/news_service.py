@@ -43,7 +43,7 @@ async def _try_newsapi(category: str):
         return None
 
     try:
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(verify=False) as client:
             resp = await client.get(
                 "https://newsapi.org/v2/top-headlines",
                 params={"country": "in", "category": category, "apiKey": settings.NEWS_API_KEY, "pageSize": 10},
@@ -78,7 +78,7 @@ async def _try_gnews(category: str):
 
     topic = CATEGORY_TOPICS.get(category, category)
     try:
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(verify=False) as client:
             resp = await client.get(
                 f"{GNEWS_BASE}/search",
                 params={"q": topic, "lang": "en", "country": "in", "max": 8, "token": gnews_key},
@@ -162,7 +162,7 @@ async def get_trending_topic(topic: str):
     # Try NewsAPI search
     if settings.NEWS_API_KEY and settings.NEWS_API_KEY != "demo_key":
         try:
-            async with httpx.AsyncClient() as client:
+            async with httpx.AsyncClient(verify=False) as client:
                 resp = await client.get(
                     "https://newsapi.org/v2/everything",
                     params={"q": topic, "language": "en", "sortBy": "publishedAt", "pageSize": 5, "apiKey": settings.NEWS_API_KEY},

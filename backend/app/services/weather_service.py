@@ -39,7 +39,7 @@ async def _geocode(city: str):
         return cached
 
     try:
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(verify=False) as client:
             resp = await client.get(GEOCODING_URL, params={"name": city, "count": 1, "language": "en"}, timeout=10)
             if resp.status_code == 200:
                 data = resp.json()
@@ -78,7 +78,7 @@ async def get_current_weather(city: str = "Ahmedabad"):
 
     try:
         geo = await _geocode(city)
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(verify=False) as client:
             resp = await client.get(
                 WEATHER_URL,
                 params={
@@ -121,7 +121,7 @@ async def get_forecast(city: str = "Ahmedabad"):
 
     try:
         geo = await _geocode(city)
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(verify=False) as client:
             resp = await client.get(
                 WEATHER_URL,
                 params={

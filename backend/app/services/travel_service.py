@@ -122,7 +122,7 @@ async def _get_amadeus_token():
         return cached_token
 
     try:
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(verify=False) as client:
             resp = await client.post(
                 AMADEUS_AUTH_URL,
                 data={"grant_type": "client_credentials", "client_id": client_id, "client_secret": client_secret},
@@ -148,7 +148,7 @@ async def get_flight_prices(from_city: str = "Ahmedabad", to_city: str = "Goa", 
     travel_date = date or (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d")
 
     try:
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(verify=False) as client:
             resp = await client.get(
                 AMADEUS_FLIGHTS_URL,
                 headers={"Authorization": f"Bearer {token}"},

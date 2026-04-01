@@ -40,7 +40,7 @@ ALL_SPORTS = list(LEAGUES.keys())
 async def _fetch_api(endpoint: str, params: dict = None):
     """Fetch from TheSportsDB free API."""
     try:
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(verify=False) as client:
             resp = await client.get(f"{BASE_URL}/{endpoint}", params=params or {}, timeout=10)
             if resp.status_code == 200:
                 return resp.json()
